@@ -1,10 +1,12 @@
-FROM node:22-bookworm-slim AS deps
+# Use the full image so C++/Python dependencies can compile
+FROM node:22-bookworm AS deps 
 
 WORKDIR /app
 COPY backend/package*.json ./
 RUN npm install --omit=dev
 
-FROM node:22-bookworm-slim AS runtime
+# Keep the slim image for the actual runtime
+FROM node:22-bookworm-slim AS runtime 
 
 WORKDIR /app
 ENV NODE_ENV=production
